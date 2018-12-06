@@ -5,3 +5,6 @@ fetch
 requitements.yml
 Try-Ceph/
 Vagrantfile.orig
+.idea
+ddisk-*
+site.retry

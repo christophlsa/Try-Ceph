@@ -21,7 +21,7 @@
   template: src=hosts.j2 dest=/etc/hosts
 
 - name: Start RGW
-  command: systemctl start ceph-radosgw
+  command: /etc/rc.d/init.d/ceph-radosgw start
 
 - name: Creating Rados Gateway user for S3 Access
   command : radosgw-admin user create --uid=demo --display-name="demo user" --email=demo@example.com --access-key=S3AccessKey --secret=S3SecretKey

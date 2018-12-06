@@ -1,6 +1,13 @@
 ---
+- name: Install dependencies
+  yum:
+    name:
+      - git
+      - python-pip
+    state: present
+
 - name: Cloning ceph-dash from github
-  git: repo=git://github.com/Crapworks/ceph-dash.git dest=/etc/ceph/ceph-dash accept_hostkey=yes
+  git: repo=https://github.com/Crapworks/ceph-dash.git dest=/etc/ceph/ceph-dash accept_hostkey=yes force=yes
 
 - name: Upgrading jinja2 for ceph-dash
   command: pip install --upgrade jinja2

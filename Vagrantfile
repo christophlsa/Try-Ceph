@@ -29,7 +29,7 @@ def create_vmdk(name, size)
 end
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-config.vm.box = 'ceph/centos7'
+config.vm.box = 'centos/7'
 config.ssh.pty = true
 config.ssh.insert_key = false # workaround for https://github.com/mitchellh/vagrant/issues/5048
 
@@ -51,16 +51,17 @@ config.ssh.insert_key = false # workaround for https://github.com/mitchellh/vagr
       osd.vm.network :private_network, ip: "#{SUBNET}.10#{i}"
       osd.vm.network :private_network, ip: "#{SUBNET}.20#{i}"
       osd.vm.provider :virtualbox do |vb|
+        vb.customize ["storagectl", :id, "--name", "SATA", "--add", "sata" ]
       (0..1).each do |d|
           vb.customize ['createhd',
-                        '--filename', "disk-#{i}-#{d}",
+                        '--filename', "ddisk-#{i}-#{d}",
                         '--size', '11000']
           vb.customize ['storageattach', :id,
                         '--storagectl', 'SATA',
                         '--port', 3 + d,
                         '--device', 0,
                         '--type', 'hdd',
-                        '--medium', "disk-#{i}-#{d}.vdi"]
+                        '--medium', "ddisk-#{i}-#{d}.vdi"]
         end
 	vb.customize ['modifyvm', :id, '--memory', '512']
 
